@@ -11,4 +11,8 @@ public class LobbyScenario : MonoBehaviour
     {
         user.GetUserInfoFromBackend();
     }
+    private void Start()
+    {
+        BackendGameData.Instance.GameDataLoad();
+    }
 }

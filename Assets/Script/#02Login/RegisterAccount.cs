@@ -51,7 +51,7 @@ public class RegisterAccount : LoginBase
         }
 
         //메일 형식검사
-        if (!inputFieldPW.text.Contains("@"))
+        if (!inputFieldEmail.text.Contains("@"))
         {
             GuideForIncorrectlyEnterData(imageEmail, "메일형식이 잘못되었습니다. (ex. address@xx.xx) ");
             return;
@@ -82,6 +82,9 @@ public class RegisterAccount : LoginBase
                     if (callback.IsSuccess())
                     {
                         SetMessage($"계정 생성 성공.{inputFieldEmail}");
+
+                        //계정 생성에 성공했을때 해당 계정의 게임정보 생성
+                        BackendGameData.Instance.GameDataInsert();
 
                         //로비 씬 이동
                         Utils.LoadScene(SceneNames.Lobby);
