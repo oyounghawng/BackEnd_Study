@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6385107805909337578}
   - component: {fileID: 7753741281290321553}
+  - component: {fileID: 7326944587778232879}
   - component: {fileID: 332700597946387330}
   - component: {fileID: 240401477087215235}
-  - component: {fileID: 7326944587778232879}
   - component: {fileID: -5632528399258481376}
   m_Layer: 0
   m_Name: Enemy
@@ -88,32 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &332700597946387330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5121281191300419607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 561a7b07742cb7b40ba4570cbce00220, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  moveDirection: {x: 0, y: -1, z: 0}
---- !u!114 &240401477087215235
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5121281191300419607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c24a9f79f4b80f245b19d09e61fb4b1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &7326944587778232879
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -149,6 +123,34 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.35
+--- !u!114 &332700597946387330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5121281191300419607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 561a7b07742cb7b40ba4570cbce00220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  moveDirection: {x: 0, y: -1, z: 0}
+--- !u!114 &240401477087215235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5121281191300419607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c24a9f79f4b80f245b19d09e61fb4b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scorePoint: 100
+  explosionPrefab: {fileID: 4162049007692154735, guid: 17e11fdb4de31a74bb3e637c11ebf263, type: 3}
 --- !u!114 &-5632528399258481376
 MonoBehaviour:
   m_ObjectHideFlags: 0

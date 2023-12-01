@@ -86,6 +86,9 @@ public class RegisterAccount : LoginBase
                         //계정 생성에 성공했을때 해당 계정의 게임정보 생성
                         BackendGameData.Instance.GameDataInsert();
 
+                        //차트 데이터 불러오기
+                        BackendChartData.LoadAllChart();
+
                         //로비 씬 이동
                         Utils.LoadScene(SceneNames.Lobby);
                     }

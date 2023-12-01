@@ -29,10 +29,12 @@ public class TopPanelViewer : MonoBehaviour
 
     public void UpdataGameData()
     {
-        textLevel.text = $"{BackendGameData.Instance.UserGameData.level}";
-        // 임시로 최대 경험치 100으로 설정
-        sliderExperience.value = BackendGameData.Instance.UserGameData.experience / 100;
-        textHeart.text = $"{BackendGameData.Instance.UserGameData.heart}";
+        int currentlevel = BackendGameData.Instance.UserGameData.level;
+
+        textLevel.text = currentlevel.ToString();
+        sliderExperience.value = BackendGameData.Instance.UserGameData.experience /
+                                 BackendChartData.levelChart[currentlevel-1].maxExperience;
+        textHeart.text = $"{BackendGameData.Instance.UserGameData.heart} / 30";
         textJewel.text = $"{BackendGameData.Instance.UserGameData.jewel}";
         textGold.text = $"{BackendGameData.Instance.UserGameData.gold}";
     }

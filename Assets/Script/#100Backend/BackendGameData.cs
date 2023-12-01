@@ -1,5 +1,4 @@
 using BackEnd;
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 public class BackendGameData
@@ -7,7 +6,6 @@ public class BackendGameData
     [System.Serializable]
     public class GameDataLoadEvent : UnityEvent { }
     public GameDataLoadEvent onGameDataLoadEvenet = new GameDataLoadEvent();
-
 
     private static BackendGameData instance = null;
     public static BackendGameData Instance
@@ -44,6 +42,7 @@ public class BackendGameData
             {"gold", userGameData.gold},
             {"jewel", userGameData.jewel},
             {"heart", userGameData.heart},
+            {"dailyBestScore",UserGameData.dailyBestScore }
         };
 
         // 첫번째 매개변수는 뒤끝 콘솔의 "게임정보 관리 탭에 생성한 테이블 이름"
@@ -97,6 +96,7 @@ public class BackendGameData
                         UserGameData.gold = int.Parse(gameDataJson[0]["gold"].ToString());
                         UserGameData.jewel = int.Parse(gameDataJson[0]["jewel"].ToString());
                         UserGameData.heart = int.Parse(gameDataJson[0]["heart"].ToString());
+                        UserGameData.dailyBestScore = int.Parse(gameDataJson[0]["dailyBestScore"].ToString());
 
                         onGameDataLoadEvenet?.Invoke();
                     }
@@ -123,7 +123,7 @@ public class BackendGameData
     /// </summary>
     public void GameDataUpdate(UnityAction action = null)
     {
-        if(userGameData == null)
+        if (userGameData == null)
         {
             Debug.LogError("서버에서 다운 받거나 새로 삽입한 데이터가 존재하지 않습니다." +
                   "Insert 혹은 load를 통해 데이터를 생성해 주세요");
@@ -137,10 +137,11 @@ public class BackendGameData
             {"gold", userGameData.gold},
             {"jewel", userGameData.jewel},
             {"heart", userGameData.heart},
+            {"dailyBestScore", UserGameData.dailyBestScore}
         };
 
         //게임 정보의 고유값(gamedatarowindate)가 없으면 에러메시지 출력
-        if(string.IsNullOrEmpty(gameDataRowIndate))
+        if (string.IsNullOrEmpty(gameDataRowIndate))
         {
             Debug.LogError("유저의 indate 정보가 없어 게임정보 데이터 수정에 실패했습니다.");
         }
@@ -152,11 +153,13 @@ public class BackendGameData
 
             Backend.GameData.UpdateV2("USER_DATA", gameDataRowIndate, Backend.UserInDate, param, callback =>
             {
-                if(callback.IsSuccess())
+                if (callback.IsSuccess())
                 {
                     Debug.Log($"게임 정보 데이터 수정에 성공했습니다. : {callback}");
 
                     action?.Invoke();
+
+                    onGameDataLoadEvenet?.Invoke();
                 }
                 else
                 {

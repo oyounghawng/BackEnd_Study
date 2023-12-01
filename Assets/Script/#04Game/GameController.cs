@@ -1,11 +1,18 @@
-using BackEnd;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class GameController : MonoBehaviour
 {
+    [SerializeField]
+    private UnityEvent onGameOver;
+    [SerializeField]
+    private DailyRankRegister dailyrank;
+    private int score = 0;
     public bool IsGameOver { set; get; } = false;
+    public int Score
+    {
+        set => score = Mathf.Max(0, value);
+        get => score;
+    }
     public void GameOver()
     {
         //중복 처리 되지 않도록 bool 변수로 제어
@@ -13,25 +20,10 @@ public class GameController : MonoBehaviour
 
         IsGameOver = false;
 
-        //경험치 증가 및 레벨업 여부 검사
-        //현재 레벨 시스템에 대한 설정이 없기에 최대값 100
-        //플래이 할때마다 25씩 증가
-        BackendGameData.Instance.UserGameData.experience += 25;
-        if(BackendGameData.Instance.UserGameData.experience >= 100)
-        {
-            BackendGameData.Instance.UserGameData.experience = 0;
-            BackendGameData.Instance.UserGameData.level++;
-        }
-        //게임정보 업데이트
+        //게임오버 되었을때 호출할 매소드 실행
+        onGameOver.Invoke();
 
-        BackendGameData.Instance.GameDataUpdate(AfterGameOver);
-        
-        
-    }
-
-    public void AfterGameOver()
-    {
-        // 로비 씬으로 이동
-        Utils.LoadScene(SceneNames.Lobby);
+        //현재 점수 정보를 바탕으로 랭크 갱신
+        dailyrank.Process(score);
     }
 }
