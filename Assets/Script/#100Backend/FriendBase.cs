@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using BackEnd;
 using System;
+using TMPro;
+using UnityEngine;
 public class FriendBase : MonoBehaviour
 {
     [Header("Friend Base")]
     [SerializeField]
     private TextMeshProUGUI textNickname; //닉네임
     [SerializeField]
-    private TextMeshProUGUI textTime; //만료시간,접속시간 등의 시간 정보
+    protected TextMeshProUGUI textTime; //만료시간,접속시간 등의 시간 정보
 
     protected BackendFriendSystem backendFriendSystem;
     protected FriendPageBase friendPageBase;

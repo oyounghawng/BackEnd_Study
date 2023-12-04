@@ -30,6 +30,6 @@ public class FriendSentRequestPage : FriendPageBase
 
         inputFieldNickname.text = "";
 
-        backendFriendSystem.SendRequestFrined(nickname);
+        backendFriendSystem.SendRequestFriend(nickname);
     }
 }
