@@ -25,7 +25,6 @@ public class BackendGameData
 
     private string gameDataRowIndate = string.Empty;
 
-
     /// <summary>
     /// 뒤끝 콘솔 테이블에 새로운 유저정보 추가
     /// </summary>
@@ -42,11 +41,23 @@ public class BackendGameData
             {"gold", userGameData.gold},
             {"jewel", userGameData.jewel},
             {"heart", userGameData.heart},
-            {"dailyBestScore",UserGameData.dailyBestScore }
         };
+        GameDataInsert(Constants.USER_DATA_TABLE, param);
+    }
+    private void GameRankDataInsert()
+    {
+        UserGameData.dailyBestScore = 0;
 
+        Param rankParm = new Param()
+        {
+            {"dailyBestScore", userGameData.dailyBestScore},
+        };
+        GameDataInsert(Constants.USER_RANK_DATA_TABLE, rankParm);
+    }
+    private void GameDataInsert(string tableNmae, Param param)
+    {
         // 첫번째 매개변수는 뒤끝 콘솔의 "게임정보 관리 탭에 생성한 테이블 이름"
-        Backend.GameData.Insert("USER_DATA", param, callback =>
+        Backend.GameData.Insert(tableNmae, param, callback =>
         {
             //게임 정보 추가에 성공 했을 때
             if (callback.IsSuccess())
@@ -55,6 +66,8 @@ public class BackendGameData
                 gameDataRowIndate = callback.GetInDate();
 
                 Debug.Log($"게임 정보 데이터 삽입에 성공했습니다 : {callback}");
+
+                onGameDataLoadEvenet?.Invoke();
             }
             //실패
             else
@@ -69,7 +82,7 @@ public class BackendGameData
     /// </summary>
     public void GameDataLoad()
     {
-        Backend.GameData.GetMyData("USER_DATA", new Where(), callback =>
+        Backend.GameData.GetMyData(Constants.USER_DATA_TABLE, new Where(), callback =>
         {
             //성공했을 때
             if (callback.IsSuccess())
@@ -85,6 +98,9 @@ public class BackendGameData
                     if (gameDataJson.Count <= 0)
                     {
                         Debug.LogWarning("데이터가 존재하지 않습니다.");
+
+                        //유저 정보가 없으면 정보 생성
+                        GameDataInsert();
                     }
                     else
                     {
@@ -96,7 +112,6 @@ public class BackendGameData
                         UserGameData.gold = int.Parse(gameDataJson[0]["gold"].ToString());
                         UserGameData.jewel = int.Parse(gameDataJson[0]["jewel"].ToString());
                         UserGameData.heart = int.Parse(gameDataJson[0]["heart"].ToString());
-                        UserGameData.dailyBestScore = int.Parse(gameDataJson[0]["dailyBestScore"].ToString());
 
                         onGameDataLoadEvenet?.Invoke();
                     }
@@ -113,6 +128,39 @@ public class BackendGameData
             else
             {
                 Debug.LogError($"게임정보 데이터 불러오기에 실패했습니다 : {callback}");
+            }
+        });
+
+        Backend.GameData.GetMyData(Constants.USER_RANK_DATA_TABLE, new Where(), callback =>
+        {
+            //성공했을 때
+            if (callback.IsSuccess())
+            {
+                Debug.Log($"유저 랭킹 데이터 불러오기에 성공했습니다. : {callback}");
+
+                //json 데이터 파싱 성공
+                try
+                {
+                    LitJson.JsonData gameDataJson = callback.FlattenRows();
+                    //개수가 0이면 없는거
+                    if (gameDataJson.Count <= 0)
+                    {
+                        Debug.LogWarning("랭킹 데이터가 존재하지 않습니다.");
+
+                        GameRankDataInsert();
+                    }
+                }
+                //파싱 실패시 데이터 초기화
+                catch (System.Exception e)
+                {
+                    // try -cath 에러출력
+                    Debug.LogError(e);
+                }
+            }
+            //실패했을 때
+            else
+            {
+                Debug.LogError($"유저의 랭킹 데이터 불러오기에 실패했습니다 : {callback}");
             }
         });
     }
@@ -137,7 +185,6 @@ public class BackendGameData
             {"gold", userGameData.gold},
             {"jewel", userGameData.jewel},
             {"heart", userGameData.heart},
-            {"dailyBestScore", UserGameData.dailyBestScore}
         };
 
         //게임 정보의 고유값(gamedatarowindate)가 없으면 에러메시지 출력
@@ -151,7 +198,7 @@ public class BackendGameData
         {
             Debug.Log($"{gameDataRowIndate}이 게임 정보 데이터 수정을 요청합니다.");
 
-            Backend.GameData.UpdateV2("USER_DATA", gameDataRowIndate, Backend.UserInDate, param, callback =>
+            Backend.GameData.UpdateV2(Constants.USER_DATA_TABLE, gameDataRowIndate, Backend.UserInDate, param, callback =>
             {
                 if (callback.IsSuccess())
                 {

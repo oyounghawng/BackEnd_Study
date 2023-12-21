@@ -59,7 +59,7 @@ public class MemoryPool
 
         poolItemList.Clear();
     }
-    public GameObject ActivePoolItem()
+    public GameObject ActivatePoolItem()
     {
         if (poolItemList == null) return null;
         if (MaxCount == activeCount) InstantiateObjects();

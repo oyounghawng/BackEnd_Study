@@ -26,7 +26,7 @@ public class FriendPageBase : MonoBehaviour
     {
         if (textSystem.activeSelf) textSystem.SetActive(false);
 
-        GameObject item = memoryPool.ActivePoolItem();
+        GameObject item = memoryPool.ActivatePoolItem();
         item.GetComponent<FriendBase>().Setup(backendFriendSystem, this, friend);
     }
     public void ActivateAll(List<FriendData> friendList)

@@ -83,9 +83,6 @@ public class RegisterAccount : LoginBase
                     {
                         SetMessage($"계정 생성 성공.{inputFieldEmail}");
 
-                        //계정 생성에 성공했을때 해당 계정의 게임정보 생성
-                        BackendGameData.Instance.GameDataInsert();
-
                         //차트 데이터 불러오기
                         BackendChartData.LoadAllChart();
 
